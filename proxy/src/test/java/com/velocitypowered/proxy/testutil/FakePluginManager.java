@@ -21,10 +21,11 @@ import com.google.common.collect.ImmutableList;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.PluginManager;
-import java.nio.file.Path;
-import java.util.Collection;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.nio.file.Path;
+import java.util.Collection;
 
 public class FakePluginManager implements PluginManager {
 

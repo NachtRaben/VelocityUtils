@@ -21,12 +21,12 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.velocitypowered.annotationprocessor.SerializedPluginDescription;
+import com.velocitypowered.api.Velocity;
 import com.velocitypowered.api.plugin.InvalidPluginException;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.meta.PluginDependency;
-import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.proxy.VelocityServer;
+import com.velocitypowered.proxy.VelocityManager;
 import com.velocitypowered.proxy.plugin.PluginClassLoader;
 import com.velocitypowered.proxy.plugin.loader.PluginLoader;
 import com.velocitypowered.proxy.plugin.loader.VelocityPluginContainer;
@@ -51,14 +51,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class JavaPluginLoader implements PluginLoader {
 
   private final Path baseDirectory;
   private final Map<URI, PluginClassLoader> classLoaders = new HashMap<>();
 
-  public JavaPluginLoader(ProxyServer server, Path baseDirectory) {
+  public JavaPluginLoader(Velocity server, Path baseDirectory) {
     this.baseDirectory = baseDirectory;
   }
 
@@ -152,7 +151,7 @@ public class JavaPluginLoader implements PluginLoader {
       while ((entry = in.getNextJarEntry()) != null) {
         if (entry.getName().equals("velocity-plugin-info.json")) {
           try (Reader pluginInfoReader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-            return VelocityServer.GENERAL_GSON.fromJson(pluginInfoReader,
+            return VelocityManager.GENERAL_GSON.fromJson(pluginInfoReader,
                 new TypeToken<List<SerializedPluginDescription>>() {}.getType());
           }
         }

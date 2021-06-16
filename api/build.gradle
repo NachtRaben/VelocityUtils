@@ -22,21 +22,21 @@ dependencies {
     api 'com.google.code.gson:gson:2.8.6'
     api "com.google.guava:guava:${guavaVersion}"
 
-    api "net.kyori:adventure-api:${adventureVersion}"
-    api "net.kyori:adventure-text-serializer-gson:${adventureVersion}"
-    api "net.kyori:adventure-text-serializer-legacy:${adventureVersion}"
-    api "net.kyori:adventure-text-serializer-plain:${adventureVersion}"
-    api("net.kyori:coffee:1.0.0-SNAPSHOT")
+//    api "net.kyori:adventure-api:${adventureVersion}"
+//    api "net.kyori:adventure-text-serializer-gson:${adventureVersion}"
+//    api "net.kyori:adventure-text-serializer-legacy:${adventureVersion}"
+//    api "net.kyori:adventure-text-serializer-plain:${adventureVersion}"
+//    api("net.kyori:coffee:1.0.0-SNAPSHOT")
 
     api "org.slf4j:slf4j-api:${slf4jVersion}"
     api 'com.google.inject:guice:5.0.1'
     api "org.checkerframework:checker-qual:${checkerFrameworkVersion}"
-    api 'com.velocitypowered:velocity-brigadier:1.0.0-SNAPSHOT'
+//    api 'com.velocitypowered:velocity-brigadier:1.0.0-SNAPSHOT'
 
-    api "org.spongepowered:configurate-hocon:${configurateVersion}"
-    api "org.spongepowered:configurate-yaml:${configurateVersion}"
-    api "org.spongepowered:configurate-gson:${configurateVersion}"
-
+//    api "org.spongepowered:configurate-hocon:${configurateVersion}"
+//    api "org.spongepowered:configurate-yaml:${configurateVersion}"
+//    api "org.spongepowered:configurate-gson:${configurateVersion}"
+//
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 }
@@ -87,6 +87,7 @@ test {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = "velocity-utils-api"
             from components.java
 
             artifact sourcesJar

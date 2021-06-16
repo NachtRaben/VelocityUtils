@@ -22,24 +22,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import com.vdurmont.semver4j.Semver;
 import com.vdurmont.semver4j.Semver.SemverType;
 import com.vdurmont.semver4j.SemverException;
-import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.Velocity;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.PluginManager;
 import com.velocitypowered.api.plugin.meta.PluginDependency;
-import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.proxy.VelocityServer;
+import com.velocitypowered.proxy.VelocityManager;
 import com.velocitypowered.proxy.plugin.loader.VelocityPluginContainer;
 import com.velocitypowered.proxy.plugin.loader.java.JavaPluginLoader;
 import com.velocitypowered.proxy.plugin.util.PluginDependencyUtils;
-import com.velocitypowered.proxy.plugin.util.ProxyPluginContainer;
+import com.velocitypowered.proxy.plugin.util.DummyPluginContainer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -63,13 +64,13 @@ public class VelocityPluginManager implements PluginManager {
 
   private final Map<String, PluginContainer> plugins = new LinkedHashMap<>();
   private final IdentityHashMap<Object, PluginContainer> pluginInstances = new IdentityHashMap<>();
-  private final VelocityServer server;
+  private final VelocityManager server;
 
-  public VelocityPluginManager(VelocityServer server) {
+  public VelocityPluginManager(VelocityManager server) {
     this.server = checkNotNull(server, "server");
 
     // Register ourselves as a plugin
-    this.registerPlugin(ProxyPluginContainer.VELOCITY);
+    this.registerPlugin(DummyPluginContainer.VELOCITY);
   }
 
   private void registerPlugin(PluginContainer plugin) {
@@ -171,10 +172,10 @@ public class VelocityPluginManager implements PluginManager {
     AbstractModule commonModule = new AbstractModule() {
       @Override
       protected void configure() {
-        bind(ProxyServer.class).toInstance(server);
+        bind(Velocity.class).toInstance(server);
         bind(PluginManager.class).toInstance(server.pluginManager());
         bind(EventManager.class).toInstance(server.eventManager());
-        bind(CommandManager.class).toInstance(server.commandManager());
+//        bind(CommandManager.class).toInstance(server.getCommandManager());
         for (PluginContainer container : pluginContainers.keySet()) {
           bind(PluginContainer.class)
             .annotatedWith(Names.named(container.description().id()))

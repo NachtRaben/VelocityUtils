@@ -9,8 +9,6 @@ package com.velocitypowered.api.event;
 
 import com.google.common.base.Preconditions;
 import java.util.Objects;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -86,9 +84,9 @@ public interface ResultedEvent<R extends ResultedEvent.Result> extends Event {
 
     private static final ComponentResult ALLOWED = new ComponentResult(null);
 
-    private final @Nullable Component reason;
+    private final @Nullable String reason;
 
-    private ComponentResult(@Nullable Component reason) {
+    private ComponentResult(@Nullable String reason) {
       this.reason = reason;
     }
 
@@ -97,7 +95,7 @@ public interface ResultedEvent<R extends ResultedEvent.Result> extends Event {
       return reason == null;
     }
 
-    public @Nullable Component reason() {
+    public @Nullable String reason() {
       return reason;
     }
 
@@ -106,7 +104,7 @@ public interface ResultedEvent<R extends ResultedEvent.Result> extends Event {
       if (reason == null) {
         return "allowed";
       } else {
-        return "denied: " + PlainComponentSerializer.plain().serialize(reason);
+        return "denied: " + reason;
       }
     }
 
@@ -114,7 +112,7 @@ public interface ResultedEvent<R extends ResultedEvent.Result> extends Event {
       return ALLOWED;
     }
 
-    public static ComponentResult denied(Component reason) {
+    public static ComponentResult denied(String reason) {
       Preconditions.checkNotNull(reason, "reason");
       return new ComponentResult(reason);
     }

@@ -29,6 +29,7 @@ test {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = "velocity-utils-annotation-processor"
             from components.java
         }
     }

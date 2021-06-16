@@ -25,14 +25,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface UntargetedEventHandler {
 
-  EventHandler<Event> buildHandler(Object targetInstance);
+  EventHandler<Object> buildHandler(Object targetInstance);
 
   interface EventTaskHandler extends UntargetedEventHandler {
 
-    @Nullable EventTask execute(Object targetInstance, Event event);
+    @Nullable EventTask execute(Object targetInstance, Object event);
 
     @Override
-    default EventHandler<Event> buildHandler(final Object targetInstance) {
+    default EventHandler<Object> buildHandler(final Object targetInstance) {
       return event -> execute(targetInstance, event);
     }
   }
@@ -42,7 +42,7 @@ public interface UntargetedEventHandler {
     void execute(Object targetInstance, Object event);
 
     @Override
-    default EventHandler<Event> buildHandler(final Object targetInstance) {
+    default EventHandler<Object> buildHandler(final Object targetInstance) {
       return event -> {
         execute(targetInstance, event);
         return null;
@@ -55,7 +55,7 @@ public interface UntargetedEventHandler {
     void execute(Object targetInstance, Object event, Continuation continuation);
 
     @Override
-    default EventHandler<Event> buildHandler(final Object targetInstance) {
+    default EventHandler<Object> buildHandler(final Object targetInstance) {
       return event -> EventTask.withContinuation(continuation ->
           execute(targetInstance, event, continuation));
     }

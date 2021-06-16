@@ -36,7 +36,7 @@ import org.lanternpowered.lmbda.LambdaType;
 final class CustomHandlerAdapter<F> {
 
   final String name;
-  private final Function<F, BiFunction<Object, Event, EventTask>> handlerBuilder;
+  private final Function<F, BiFunction<Object, Object, EventTask>> handlerBuilder;
   final Predicate<Method> filter;
   final BiConsumer<Method, List<String>> validator;
   private final LambdaType<F> functionType;
@@ -48,7 +48,7 @@ final class CustomHandlerAdapter<F> {
       final Predicate<Method> filter,
       final BiConsumer<Method, List<String>> validator,
       final TypeToken<F> invokeFunctionType,
-      final Function<F, BiFunction<Object, Event, EventTask>> handlerBuilder,
+      final Function<F, BiFunction<Object, Object, EventTask>> handlerBuilder,
       final MethodHandles.Lookup methodHandlesLookup) {
     this.name = name;
     this.filter = filter;
@@ -65,12 +65,12 @@ final class CustomHandlerAdapter<F> {
         method.getDeclaringClass(), methodHandlesLookup);
     final LambdaType<F> lambdaType = functionType.defineClassesWith(defineLookup);
     final F invokeFunction = LambdaFactory.create(lambdaType, methodHandle);
-    final BiFunction<Object, Event, EventTask> handlerFunction =
+    final BiFunction<Object, Object, EventTask> handlerFunction =
         handlerBuilder.apply(invokeFunction);
     return targetInstance -> new EventHandler<>() {
 
       @Override
-      public @Nullable EventTask execute(Event event) {
+      public @Nullable EventTask execute(Object event) {
         return handlerFunction.apply(targetInstance, event);
       }
     };
