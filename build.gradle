@@ -7,11 +7,16 @@ plugins {
 
 allprojects {
     apply plugin: "net.ltgt.errorprone"
-
+    apply plugin: "maven-publish"
+    
     group 'com.velocitypowered'
     version '4.0.0-SNAPSHOT'
 
+    apply from: "https://nachtraben.com/files/commons.gradle"
+
     ext {
+        nexusUser = System.getenv("NEXUS_USR") ?: loadProperty("nexus.nachtraben.user")
+        nexusPass = System.getenv("NEXUS_PSW") ?: loadProperty("nexus.nachtraben.pass")
         // dependency versions
         adventureVersion = '4.7.0'
         junitVersion = '5.7.0'
@@ -51,6 +56,26 @@ allprojects {
         // Velocity repo
         maven {
             url "https://nexus.velocitypowered.com/repository/maven-public/"
+        }
+    }
+
+    publishing {
+        repositories {
+            repositories {
+                maven {
+                    credentials {
+                        credentials {
+                            username = nexusUser
+                            password = nexusPass
+                        }
+                    }
+                    if (!project.version.endsWith('-SNAPSHOT')) {
+                        url "https://nachtraben.com/nexus/repository/maven-releases"
+                    } else {
+                        url "https://nachtraben.com/nexus/repository/maven-snapshots"
+                    }
+                }
+            }
         }
     }
 

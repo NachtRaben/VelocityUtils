@@ -6,7 +6,7 @@ plugins {
 
 apply plugin: 'org.cadixdev.licenser'
 apply from: '../gradle/checkstyle.gradle'
-apply from: '../gradle/publish.gradle'
+//apply from: '../gradle/publish.gradle'
 apply from: '../gradle/errorprone.gradle'
 
 java {
